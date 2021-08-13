@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_12_135425) do
+ActiveRecord::Schema.define(version: 2021_08_13_114612) do
 
   create_table "recommended_books", charset: "utf8mb4", force: :cascade do |t|
-    t.string "url"
+    t.text "url"
     t.integer "total_count"
     t.date "aggregation_date"
     t.datetime "created_at", precision: 6, null: false
