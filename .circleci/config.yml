@@ -1,29 +1,74 @@
-version: 2.1
-
-# このプロジェクトで実行するジョブの定義
+version: 2
 jobs:
   build:
     docker:
-      - image: circleci/<language>:<version TAG>
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # コンテキスト/プロジェクト UI 環境変数の参照
-    steps:
-      - checkout
-      - run: echo "this is the build job"
-  test:
-    docker:
-      - image: circleci/<language>:<version TAG>
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # コンテキスト/プロジェクト UI 環境変数の参照
-    steps:
-      - checkout
-      - run: echo "this is the test job"
+      - image: circleci/ruby:2.6.6-node-browsers
+        environment:
+          - BUNDLER_VERSION: 2.2.16
+          - RAILS_ENV: 'test'
+      - image: circleci/mysql:5.6
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          - MYSQL_ROOT_HOST: '%'
 
-# ジョブの実行順の指定
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            gem install bundler -v 2.2.16
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      - run: mv config/database.yml.ci config/database.yml
+
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      - run:
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+            circleci tests split --split-by=timings)"
+
+            bundle exec rspec \
+            --format progress \
+            --format RspecJunitFormatter \
+            --out /tmp/test-results/rspec.xml \
+            --format progress \
+            $TEST_FILES
+
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "${KEY_FINGERPRINT}"
+      - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/recommended_books_gs/deploy-me.sh"
 workflows:
-  build_and_test:
+  version: 2
+  deploy:
     jobs:
-      - build
-      - test
+      - deploy:
+          filters:
+            branches:
+              only: master
