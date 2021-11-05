@@ -63,7 +63,7 @@ jobs:
             - "${KEY_FINGERPRINT}"
       - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/recommended_books_gs/deploy-me.sh"
 workflows:
-  version: 2
+  version: 2.1
   deploy:
     jobs:
       - deploy:
