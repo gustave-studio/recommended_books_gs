@@ -50,6 +50,7 @@ test:
 #
 production:
   <<: *default
-  database: recommended_books_gs_production
-  username: recommended_books_gs
-  password: <%= ENV['RECOMMENDED_BOOKS_GS_DATABASE_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['DB_DATABASE'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
