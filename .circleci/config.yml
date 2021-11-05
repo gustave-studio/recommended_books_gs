@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  rspec:
+  build:
     docker:
       - image: circleci/ruby:2.6.6-node-browsers
         environment:
@@ -11,7 +11,7 @@ jobs:
           - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
           - MYSQL_ROOT_HOST: '%'
 
-    working_directory: ~/recomended_books_gs
+  working_directory: ~/recomended_books_gs
 
   steps:
     - checkout
@@ -53,6 +53,7 @@ jobs:
     - store_artifacts:
         path: /tmp/test-results
         destination: test-results
+
   deploy:
     machine:
       enabled: true
@@ -63,10 +64,10 @@ jobs:
       - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/recommended_books_gs/deploy-me.sh"
 
 workflows:
-  version: 2.1
-  jobs:
-    - rspec
-    - deploy:
-        filters:
-          branches:
-            only: master
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
