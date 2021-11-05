@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -11,48 +11,51 @@ jobs:
           - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
           - MYSQL_ROOT_HOST: '%'
 
-    working_directory: ~/recommended_books
+  working_directory: ~/recomended_books_gs
 
-    steps:
-      - checkout
+  steps:
+    - checkout
 
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "Gemfile.lock" }}
-            - v1-dependencies-
+    - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          - v1-dependencies-
 
-      - run:
-          name: install dependencies
-          command: |
-            gem install bundler -v 2.2.16
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+    - run:
+        name: install dependencies
+        command: |
+          gem install bundler -v 2.2.16
+          bundle install --jobs=4 --retry=3 --path vendor/bundle
 
-      - run: mv config/database.yml.ci config/database.yml
+    - save_cache:
+        paths:
+          - ./vendor/bundle
+        key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+    - run: mv config/database.yml.ci config/database.yml
 
-      - run:
-          name: run tests
-          command: |
-            mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
-            circleci tests split --split-by=timings)"
-            bundle exec rspec \
-            --format progress \
-            --format RspecJunitFormatter \
-            --out /tmp/test-results/rspec.xml \
-            --format progress \
-            $TEST_FILES
-      - store_test_results:
-          path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
+    - run: bundle exec rake db:create
+    - run: bundle exec rake db:schema:load
+
+    - run:
+        name: run tests
+        command: |
+          mkdir /tmp/test-results
+          TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+          circleci tests split --split-by=timings)"
+          bundle exec rspec \
+          --format progress \
+          --format RspecJunitFormatter \
+          --out /tmp/test-results/rspec.xml \
+          --format progress \
+          $TEST_FILES
+
+    - store_test_results:
+        path: /tmp/test-results
+
+    - store_artifacts:
+        path: /tmp/test-results
+        destination: test-results
 
   deploy:
     machine:
@@ -64,10 +67,8 @@ jobs:
       - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/recommended_books_gs/deploy-me.sh"
 
 workflows:
-  version: 2
+  version: 2.1
   deploy:
-    jobs:
-      - deploy:
-          filters:
-            branches:
-              only: master
+        filters:
+          branches:
+            only: master
