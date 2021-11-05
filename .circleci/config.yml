@@ -64,10 +64,9 @@ jobs:
 
 workflows:
   version: 2.1
-  rspec_and_rubocop_workflow:
-    jobs:
-      - rspec
-      - deploy:
-          filters:
-            branches:
-              only: master
+  jobs:
+    - build
+    - deploy:
+        filters:
+          branches:
+            only: master
