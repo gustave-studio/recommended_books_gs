@@ -1,42 +1,58 @@
 version: 2.1
 jobs:
-  rspec:
+  build:
     docker:
       - image: circleci/ruby:2.6.6-node-browsers
         environment:
-          RAILS_ENV: test
-          DB_HOST: 127.0.0.1
-          DB_USERNAME: root
+          - BUNDLER_VERSION: 2.2.16
+          - RAILS_ENV: 'test'
       - image: circleci/mysql:5.7
         environment:
-          - MYSQL_DATABASE: fitness_app01_test
-          - MYSQL_USER: root
-    working_directory: ~/fitness_app01
+          - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          - MYSQL_ROOT_HOST: '%'
+
+    working_directory: ~/repo
+
     steps:
       - checkout
+
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
             - v1-dependencies-
+
       - run:
-          name: update bundler
+          name: install dependencies
           command: |
-            gem update --system
-            gem install bundler:2.1.4
-      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
+            gem install bundler -v 2.2.16
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
           paths:
             - ./vendor/bundle
-      - run: bundle exec rails db:create RAILS_ENV=test
-      - run: bundle exec rails db:schema:load RAILS_ENV=test
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      - run: mv config/database.yml.ci config/database.yml
+
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
       - run:
-          name: yarn Install
-          command: yarn install
-      - run: bundle exec bin/webpack
-      - run:
-          name: RSpec
-          command: bundle exec rspec
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+            circleci tests split --split-by=timings)"
+            bundle exec rspec \
+            --format progress \
+            --format RspecJunitFormatter \
+            --out /tmp/test-results/rspec.xml \
+            --format progress \
+            $TEST_FILES
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
   deploy:
     machine:
       enabled: true
