@@ -1,11 +1,17 @@
 class UrlImporter
   class << self
     def import
-      period = "created:>=#{Date.today.months_ago(1).to_s} created:<=#{Date.today.to_s}"
-      items = QiitaApiManager.search(period)
-      articles = items[2]
-      amazon_url = collect_url(articles)
-      aggregate_results = aggregate_results(amazon_url)
+      page_to_get = 1
+      books_url = []
+
+      until page_to_get.nil?
+        period = "created:>=2021-11-15 created:<=2021-11-15"
+        status, page_to_get, articles = QiitaApiManager.search(period, page_to_get)
+
+        books_url << collect_url(articles)
+      end
+
+      aggregate_results = aggregate_results(books_url.flatten!)
 
       ActiveRecord::Base.transaction do
         aggregate_results.each do |url, total_count|
@@ -16,10 +22,14 @@ class UrlImporter
 
     private def collect_url(articles)
       amazon_url = []
+
       articles.each do |article|
         url_array = URI.extract(article['body'], ['https'])
-        url_array.each do |url|
-          amazon_url << url if url.include?('https://www.amazon.co.jp/')
+        url_array.each do |url|  
+          if url.include?('https://www.amazon.co.jp/')
+            url.chop! if url.last == ')'
+            amazon_url << url
+          end
         end
       end
 
