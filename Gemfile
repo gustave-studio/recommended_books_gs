@@ -35,6 +35,7 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec', require: false
   gem 'pry-rails'
+  gem 'pry-nav'
   gem "rspec_junit_formatter"
   gem 'rubocop'
 end
