@@ -5,7 +5,7 @@ class UrlImporter
       books_url = []
 
       until page_to_get.nil?
-        period = "created:>=2021-11-15 created:<=2021-11-15"
+        period = "created:>=#{Date.today.days_ago(1).to_s} created:<=#{Date.today.to_s}"
         status, page_to_get, articles = QiitaApiManager.search(period, page_to_get)
 
         books_url << collect_url(articles)
