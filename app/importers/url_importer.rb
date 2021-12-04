@@ -24,7 +24,7 @@ class UrlImporter
                                  asin: information[:asin],
                                  likes_count: information[:likes_count],
                                  total_count: index,
-                                 aggregation_date: Date.today)
+                                 article_created_at: information[:article_created_at])
         end
       end
     end
@@ -40,7 +40,13 @@ class UrlImporter
             asin = url.match(/[^0-9A-Z]([0-9A-Z]{10})([^0-9A-Z]|$)/)
             next if asin.nil?
 
-            articles_including_book_url << { article_id: article['id'], title: article['title'], article_url: article['url'], likes_count: article['likes_count'], book_url: url, asin: asin[1] }
+            articles_including_book_url << { article_id: article['id'],
+                                             title: article['title'],
+                                             article_url: article['url'],
+                                             likes_count: article['likes_count'],
+                                             book_url: url,
+                                             asin: asin[1],
+                                             article_created_at: article['created_at'] }
           end
         end
       end
