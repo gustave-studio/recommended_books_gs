@@ -23,6 +23,7 @@ module RecommendedBooksGs
 
     config.autoload_paths += %W[
       #{config.root}/importers
+      #{config.root}/counters
     ]
 
     # Permit cross origin
