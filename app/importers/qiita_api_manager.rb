@@ -7,7 +7,7 @@ class QiitaApiManager
   QIITA_ACCESS_TOKEN = ENV['QIITA_ACCESS_TOKEN']
   GET_ITEMS_URI = 'https://qiita.com/api/v2/items'
 
-  def self.search(query = 'created:>=2021-08-01 created:<=2021-08-01', page: 1)
+  def self.search(query, page)
     uri = URI.parse (GET_ITEMS_URI)
     uri.query = URI.encode_www_form({ query: query, per_page: PER_PAGE, page: page })
     req = Net::HTTP::Get.new(uri.request_uri)
