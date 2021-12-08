@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_06_190054) do
+ActiveRecord::Schema.define(version: 2021_12_08_134607) do
 
   create_table "monthly_rankings", charset: "utf8mb4", force: :cascade do |t|
     t.string "url"
-    t.string "asin"
+    t.string "isbn"
     t.integer "count"
     t.integer "ranking"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "likes_count"
   end
 
   create_table "recommended_books", charset: "utf8mb4", force: :cascade do |t|
@@ -30,8 +31,9 @@ ActiveRecord::Schema.define(version: 2021_12_06_190054) do
     t.string "title"
     t.integer "likes_count"
     t.string "article_id"
-    t.string "asin"
+    t.string "isbn"
     t.datetime "article_created_at"
+    t.string "user_id"
   end
 
 end
