@@ -1,12 +1,13 @@
 class UrlImporter
   class << self
-    def import
+    # period
+    #   "created:>=2021-11-01 created:<=2021-11-30"
+    #   "created:>=#{Date.today.days_ago(1).to_s} created:<=#{Date.today.to_s}"
+    def import(period)
       page_to_get = 1
       recommended_information = []
 
       until page_to_get.nil?
-        # period = "created:>=#{Date.today.days_ago(1).to_s} created:<=#{Date.today.to_s}"
-        period = "created:>=2021-11-01 created:<=2021-11-30"
         status, page_to_get, articles = QiitaApiManager.search(period, page_to_get)
 
         recommended_information << collect_url(articles)
