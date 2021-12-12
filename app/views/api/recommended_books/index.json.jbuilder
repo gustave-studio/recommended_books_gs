@@ -1,5 +1,5 @@
 json.set! :recommended_books do
-  json.array! @tasks do |task|
-    json.extract! task, :id, :url, :total_count, :aggregation_date, :created_at, :updated_at
+  json.array! @articles do |article|
+    json.extract! article, :id, :book_url, :total_count, :article_url, :article_id, :user_id, :title, :likes_count, :article_created_at, :created_at, :updated_at
   end
 end
