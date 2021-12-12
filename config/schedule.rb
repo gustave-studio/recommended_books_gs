@@ -25,3 +25,7 @@ set :environment, ENV['RAILS_ENV']
 every 1.day, :at => '00:00 am' do
   rake "import_article"
 end
+
+every 1.day, :at => '01:00 am' do
+  rake "count_ranking"
+end

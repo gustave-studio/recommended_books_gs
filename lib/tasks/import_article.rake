@@ -4,8 +4,8 @@ task :import_article => :environment do
   logger = Logger.new 'log/import_article.log'
 
   #インポート
-  UrlImporter.import
+  UrlImporter.import("created:>=#{Date.today.days_ago(1).to_s} created:<=#{Date.today.to_s}")
 
   #デバッグのため
-  p "ここまでOK"
+  p "Qiitaの記事のインポートここまでOK"
 end
