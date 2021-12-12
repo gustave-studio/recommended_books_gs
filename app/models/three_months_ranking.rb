@@ -1,0 +1,2 @@
+class ThreeMonthsRanking < ApplicationRecord
+end

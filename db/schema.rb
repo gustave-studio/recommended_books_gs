@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_08_134607) do
+ActiveRecord::Schema.define(version: 2021_12_12_115026) do
 
   create_table "monthly_rankings", charset: "utf8mb4", force: :cascade do |t|
     t.string "url"
@@ -34,6 +34,28 @@ ActiveRecord::Schema.define(version: 2021_12_08_134607) do
     t.string "isbn"
     t.datetime "article_created_at"
     t.string "user_id"
+  end
+
+  create_table "six_months_rankings", charset: "utf8mb4", force: :cascade do |t|
+    t.string "url"
+    t.string "isbn"
+    t.integer "count"
+    t.string "ranking"
+    t.string "integer"
+    t.integer "likes_count"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "three_months_rankings", charset: "utf8mb4", force: :cascade do |t|
+    t.string "url"
+    t.string "isbn"
+    t.integer "count"
+    t.string "ranking"
+    t.string "integer"
+    t.integer "likes_count"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

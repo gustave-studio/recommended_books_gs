@@ -1,0 +1,2 @@
+class SixMonthsRanking < ApplicationRecord
+end
