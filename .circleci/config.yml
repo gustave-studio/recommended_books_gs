@@ -44,6 +44,11 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "${KEY_FINGERPRINT}"
+      - run:
+          name: update bundler
+          command: |
+            gem update --system
+            gem install bundler:2.1.4
       - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/recommended_books_gs/deploy-me.sh"
  
 workflows:
