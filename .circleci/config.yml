@@ -47,7 +47,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "${KEY_FINGERPRINT}"
-      - run: bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/recommended_books_gs/deploy-me.sh"
  
 workflows:
