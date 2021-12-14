@@ -1,0 +1,2 @@
+class EditorialDepartmentRecommendation < ApplicationRecord
+end
