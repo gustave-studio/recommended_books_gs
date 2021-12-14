@@ -24,7 +24,7 @@ class UrlImporter
                                  title: information[:title],
                                  article_url: information[:article_url],
                                  book_url: information[:book_url],
-                                 isbn: information[:isbn],
+                                 asin: information[:asin],
                                  likes_count: information[:likes_count],
                                  total_count: index,
                                  article_created_at: information[:article_created_at])
@@ -41,12 +41,12 @@ class UrlImporter
         url_array.each do |url|  
           if url.include?('https://www.amazon.co.jp/')
             url.chop! if url.last == ')'
-            isbn = url.match(/[0-9\-]{9,16}[0-9X]/)
-            next if isbn.nil?
-            next if isbn_exist?(book_data_array, isbn[0])
+            asin = url.match(/[^0-9A-Z]([0-9A-Z]{10})([^0-9A-Z]|$)/)
+            next if asin.nil?
+            next if asin_exist?(book_data_array, asin[1])
             # binding.pry
 
-            book_data_array << { url: url, isbn: isbn[0] }
+            book_data_array << { url: url, asin: asin[1] }
           end
         end
 
@@ -57,7 +57,7 @@ class UrlImporter
                                            article_url: article['url'],
                                            likes_count: article['likes_count'],
                                            book_url: book_data[:url],
-                                           isbn: book_data[:isbn],
+                                           asin: book_data[:asin],
                                            article_created_at: article['created_at'] }
         end
       end
@@ -65,9 +65,9 @@ class UrlImporter
       articles_including_book_url
     end
 
-    private def isbn_exist?(book_data_array, isbn)
+    private def asin_exist?(book_data_array, asin)
       book_data_array.any? do |book_data|
-        book_data[:isbn] == isbn
+        book_data[:asin] == asin
       end
     end
   end
