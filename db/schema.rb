@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_021818) do
+ActiveRecord::Schema.define(version: 2021_12_14_030502) do
 
   create_table "editorial_department_recommendations", charset: "utf8mb4", force: :cascade do |t|
     t.string "title"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_021818) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "it_engineer_awards", charset: "utf8mb4", force: :cascade do |t|
+  create_table "it_engineer_books_awards", charset: "utf8mb4", force: :cascade do |t|
     t.string "title"
     t.string "isbn"
     t.string "category"

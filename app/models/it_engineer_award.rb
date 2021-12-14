@@ -1,2 +1,0 @@
-class ItEngineerAward < ApplicationRecord
-end
