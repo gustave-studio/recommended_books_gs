@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_133022) do
+ActiveRecord::Schema.define(version: 2021_12_14_151702) do
 
   create_table "editorial_department_recommendations", charset: "utf8mb4", force: :cascade do |t|
     t.string "title"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_133022) do
     t.string "url"
     t.string "isbn"
     t.integer "count"
-    t.string "ranking"
+    t.integer "ranking"
     t.string "integer"
     t.integer "likes_count"
     t.datetime "created_at", precision: 6, null: false
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_133022) do
     t.string "url"
     t.string "isbn"
     t.integer "count"
-    t.string "ranking"
+    t.integer "ranking"
     t.string "integer"
     t.integer "likes_count"
     t.datetime "created_at", precision: 6, null: false
