@@ -9,7 +9,7 @@ class RankingCounter
         MonthlyRanking.destroy_all
 
         sorted_book_data.each.with_index(1) do |data, index|
-          MonthlyRanking.create(isbn: data[:isbn], count: data[:count], likes_count: data[:likes_count], ranking: index)
+          MonthlyRanking.create(asin: data[:asin], count: data[:count], likes_count: data[:likes_count], ranking: index)
         end
       end
     end
@@ -21,7 +21,7 @@ class RankingCounter
         ThreeMonthsRanking.destroy_all
 
         sorted_book_data.each.with_index(1) do |data, index|
-          ThreeMonthsRanking.create(isbn: data[:isbn], count: data[:count], likes_count: data[:likes_count], ranking: index)
+          ThreeMonthsRanking.create(asin: data[:asin], count: data[:count], likes_count: data[:likes_count], ranking: index)
         end
       end
     end
@@ -33,22 +33,22 @@ class RankingCounter
         SixMonthsRanking.destroy_all
 
         sorted_book_data.each.with_index(1) do |data, index|
-          SixMonthsRanking.create(isbn: data[:isbn], count: data[:count], likes_count: data[:likes_count], ranking: index)
+          SixMonthsRanking.create(asin: data[:asin], count: data[:count], likes_count: data[:likes_count], ranking: index)
         end
       end
     end
 
     private def count_ranking(period)
-      recommended_data = RecommendedBook.where(article_created_at: period).group(:isbn, :user_id, :likes_count).select(:isbn, :likes_count).map{ |data| { isbn: data.isbn, likes_count: data.likes_count } }
+      recommended_data = RecommendedBook.where(article_created_at: period).group(:asin, :user_id, :likes_count).select(:asin, :likes_count).map{ |data| { asin: data.asin, likes_count: data.likes_count } }
 
       book_data_count = recommended_data.flatten.each_with_object([]) { |value, result|
-        existing_book_data = result.find { |result| result[:isbn].include?(value[:isbn]) }
+        existing_book_data = result.find { |result| result[:asin].include?(value[:asin]) }
 
         if existing_book_data
           existing_book_data[:likes_count] += value[:likes_count]
           existing_book_data[:count] += 1
         else
-          result << { isbn: value[:isbn], likes_count: value[:likes_count], count: 1 }
+          result << { asin: value[:asin], likes_count: value[:likes_count], count: 1 }
         end
       }
 

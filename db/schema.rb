@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_030502) do
+ActiveRecord::Schema.define(version: 2021_12_14_133022) do
 
   create_table "editorial_department_recommendations", charset: "utf8mb4", force: :cascade do |t|
     t.string "title"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_030502) do
     t.integer "order"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "asin"
   end
 
   create_table "it_engineer_books_awards", charset: "utf8mb4", force: :cascade do |t|
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_030502) do
     t.integer "order"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "asin"
   end
 
   create_table "monthly_rankings", charset: "utf8mb4", force: :cascade do |t|
@@ -39,6 +41,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_030502) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "likes_count"
+    t.string "asin"
   end
 
   create_table "recommended_books", charset: "utf8mb4", force: :cascade do |t|
@@ -53,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_030502) do
     t.string "isbn"
     t.datetime "article_created_at"
     t.string "user_id"
+    t.string "asin"
   end
 
   create_table "six_months_rankings", charset: "utf8mb4", force: :cascade do |t|
@@ -64,6 +68,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_030502) do
     t.integer "likes_count"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "asin"
   end
 
   create_table "three_months_rankings", charset: "utf8mb4", force: :cascade do |t|
@@ -75,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_030502) do
     t.integer "likes_count"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "asin"
   end
 
 end
