@@ -41,10 +41,10 @@ class UrlImporter
         url_array.each do |url|  
           if url.include?('https://www.amazon.co.jp/')
             url.chop! if url.last == ')'
-            asin = url.match(/[^0-9A-Z]([0-9A-Z]{10})([^0-9A-Z]|$)/)
+            asin = url.match(/[^0-9A-Z-]([0-9A-Z]{10})([^0-9A-Z]|$)/)
             next if asin.nil?
             next if asin_exist?(book_data_array, asin[1])
-            # binding.pry
+            # binding.pry if asin[1] == "TECHNOLOGY"
 
             book_data_array << { url: url, asin: asin[1] }
           end
