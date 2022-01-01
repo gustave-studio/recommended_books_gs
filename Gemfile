@@ -10,6 +10,7 @@ gem 'mysql2', '~> 0.5'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
+gem 'sassc', '2.1.0'
 gem 'sass-rails', '6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.0'
@@ -31,8 +32,6 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rack-cors'
 
 gem 'whenever', require: false
-
-gem 'redis-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
