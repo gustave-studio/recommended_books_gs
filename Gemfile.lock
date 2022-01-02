@@ -188,7 +188,10 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+<<<<<<< HEAD
     redis (4.5.1)
+=======
+>>>>>>> 04938eb8089b5309e8174b1cb7b425b68409e4a9
     regexp_parser (2.2.0)
     rexml (3.2.5)
     rspec (3.10.0)
@@ -303,7 +306,10 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.0)
+<<<<<<< HEAD
   redis
+=======
+>>>>>>> 04938eb8089b5309e8174b1cb7b425b68409e4a9
   rspec-rails
   rspec_junit_formatter
   rubocop
