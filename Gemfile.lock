@@ -226,7 +226,7 @@ GEM
     rubocop-ast (1.15.1)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
-    rubyzip (2.3.2)
+    rubyzip (2.3.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.1.0)
@@ -307,6 +307,7 @@ DEPENDENCIES
   rspec-rails
   rspec_junit_formatter
   rubocop
+  rubyzip (= 2.3.0)
   sass-rails (= 6)
   sassc (= 2.1.0)
   selenium-webdriver
